@@ -292,7 +292,7 @@ class TypingGame {
     }
     async saveScore() {
         const playerName = prompt("Enter your name for the leaderboard:") || "Anonymous";
-        const response = await fetch('http://127.0.0.1:3000/rankings', {
+        const response = await fetch('https://speedyfingers-gjbo.vercel.app/rankings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -309,7 +309,7 @@ class TypingGame {
     
     async displayRanking() {
         try {
-            const response = await fetch(`http://127.0.0.1:3000/rankings`);
+            const response = await fetch(`https://speedyfingers-gjbo.vercel.app/rankings`);
             const rankings = await response.json();
     
             console.log('Fetched Rankings:', rankings); // デバッグ用出力
