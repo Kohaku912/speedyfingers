@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico">
+    <title>Speedy Fingers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-400 to-purple-600 min-h-screen font-roboto text-gray-100">
+    <header class="p-4 shadow-md bg-gradient-to-r from-blue-500 to-indigo-700 text-center text-white">
+        <h1 class="text-4xl font-bold">Speedy Fingers</h1>
+        <p class="mt-2 text-sm">The Ultimate Typing Test!</p>
+    </header>
+
+    <main class="mt-8 px-4">
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section class="bg-white text-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+                <h2 class="text-2xl font-bold mb-4">Game Info</h2>
+                <div class="info-box w-full flex justify-between items-center bg-gray-100 p-4 rounded-lg mb-4">
+                    <span id="timer" class="text-lg font-bold">Time: 60.00</span>
+                    <span id="score" class="text-lg font-bold">Score: 0</span>
+                </div>
+                <input id="mobile-input" type="text" class="absolute opacity-0 w-0 h-0">
+                <button id="start-button" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded shadow-md transition-transform transform hover:scale-105">
+                    Enterを押してスタート
+                </button>
+                <div id="word-container" class="text-3xl font-semibold text-gray-700 mt-6"></div>
+            </section>
+
+            <!-- Ranking Section -->
+            <section class="bg-white text-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Ranking</h2>
+                <ul id="ranking-list" class="list-disc pl-5 text-gray-700 space-y-2">
+                    <li>No rankings yet</li>
+                </ul>
+            </section>
+            <section class="bg-white text-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">難易度選択</h2>
+                <div class="flex justify-around">
+                    <button id="easy-button" class="difficulty-button bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded shadow-md">Easy</button>
+                    <button id="normal-button" class="difficulty-button bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded shadow-md">Normal</button>
+                    <button id="hard-button" class="difficulty-button bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded shadow-md">Hard</button>
+                </div>
+                <p id="selected-difficulty" class="mt-4 text-center text-lg font-bold text-gray-700">現在の難易度: Easy</p>
+            </section>
+            
+            
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
