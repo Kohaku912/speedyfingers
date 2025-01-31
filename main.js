@@ -168,6 +168,8 @@ class TypingGame {
                 spans[this.inputIndex].classList.add('text-green-500');
                 this.inputIndex++;
                 this.score++;
+                if(this.difficulty == "normal")this.score += 0.2
+                if(this.difficulty == "hard")this.score += 0.5
             }
             this.scoreDisplay.textContent = `Score: ${this.score}`;
         }
