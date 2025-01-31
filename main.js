@@ -186,6 +186,7 @@ class TypingGame {
         const notification = document.createElement('div');
         notification.textContent = `Difficulty set to ${level.toUpperCase()}`;
         notification.className = 'difficulty-notification';
+        document.getElementById("selected-difficulty").textContent = "現在の難易度: " + this.difficulty
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 3000);
     }
