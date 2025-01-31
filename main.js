@@ -4,7 +4,7 @@ class TypingGame {
         this.usedWords = new Set();
         this.currentWord = "";
         this.score = 0;
-        this.timeLeft = 60.00;
+        this.timeLeft = 40.00;
         this.timer = null;
         this.difficulty = 'easy';
         this.gameActive = false;
@@ -58,13 +58,13 @@ class TypingGame {
 
     resetGame() {
         this.score = 0;
-        this.timeLeft = 60.00;
+        this.timeLeft = 40.00;
         this.inputIndex = 0;
         this.totalTyped = 0;
         this.missedTyped = 0;
         this.usedWords.clear();
         this.scoreDisplay.textContent = "Score: 0";
-        this.timerDisplay.textContent = "Time: 60.00";
+        this.timerDisplay.textContent = "Time: 40.00";
         this.wordContainer.innerHTML = '';
     }
 
@@ -78,7 +78,7 @@ class TypingGame {
             this.score += Math.floor(this.timeLeft * 10); // 残り秒数を10倍してスコアに追加
         }
     
-        const elapsedTime = 60.00 - this.timeLeft;
+        const elapsedTime = 40.00 - this.timeLeft;
         const typingSpeed = (this.totalTyped / elapsedTime).toFixed(2);
     
         const title = gameCleared ? 'Congratulations! You cleared the game!' : 'Game Over!';
