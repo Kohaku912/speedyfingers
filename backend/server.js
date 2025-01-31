@@ -1,60 +1,57 @@
-const express = require('express');
+const express = require('express'); 
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const { put, get } = require("@vercel/blob");
 
 const app = express();
 const PORT = 80;
-
-// JSONファイルのパス
-const RANKINGS_FILE = path.join(__dirname, 'rankings.json');
-
-// ランキングデータをロードする関数
-const loadRankings = () => {
-    if (fs.existsSync(RANKINGS_FILE)) {
-        const data = fs.readFileSync(RANKINGS_FILE, 'utf-8');
-        return JSON.parse(data);
-    }
-    return [];
-};
-
-// ランキングデータを保存する関数
-const saveRankings = (rankings) => {
-    fs.writeFileSync(RANKINGS_FILE, JSON.stringify(rankings, null, 2), 'utf-8');
-};
-
-// 初期ランキングデータをロード
-let rankings = loadRankings();
+const RANKINGS_BLOB = "rankings.json";
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// ランキングを取得するAPI
-// ランキングを取得するAPI（難易度でフィルタリング）
-app.get('/rankings', (req, res) => {
-    const filteredRankings = rankings.slice(0, 5); // 上位5件を返す
+// ランキングデータをロードする関数
+const loadRankings = async () => {
+    try {
+        const response = await get(RANKINGS_BLOB);
+        if (!response.ok) throw new Error("Failed to fetch rankings");
+        const data = await response.text();
+        return JSON.parse(data);
+    } catch (error) {
+        console.error("Error loading rankings:", error);
+        return [];
+    }
+};
 
-    res.json(filteredRankings);
+// ランキングデータを保存する関数
+const saveRankings = async (rankings) => {
+    try {
+        await put(RANKINGS_BLOB, JSON.stringify(rankings, null, 2), { access: "public" });
+    } catch (error) {
+        console.error("Error saving rankings:", error);
+    }
+};
+
+// ランキングを取得するAPI
+app.get('/rankings', async (req, res) => {
+    const rankings = await loadRankings();
+    res.json(rankings.slice(0, 5)); // 上位5件を返す
 });
 
 // スコアを送信するAPI
-app.post('/rankings', (req, res) => {
+app.post('/rankings', async (req, res) => {
     const { name, score, difficulty } = req.body;
     if (typeof name !== 'string' || typeof score !== 'number' || typeof difficulty !== 'string') {
         return res.status(400).json({ error: 'Invalid data format' });
     }
 
-    // ランキングに追加し、スコア順にソート
+    const rankings = await loadRankings();
     rankings.push({ name, score, difficulty });
-    rankings = rankings.sort((a, b) => b.score - a.score);
+    rankings.sort((a, b) => b.score - a.score);
 
-    // JSONファイルに保存
-    saveRankings(rankings);
-
+    await saveRankings(rankings);
     res.json({ message: 'Score added', rankings });
 });
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
