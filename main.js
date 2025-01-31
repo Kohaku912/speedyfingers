@@ -140,6 +140,8 @@ class TypingGame {
         // 正しく入力された部分の長さが単語の長さと一致したら次の単語へ
         if (this.inputIndex === this.currentWord.length) {
             this.score += this.currentWord.length;
+            if(this.difficulty == "normal")this.score += this.currentWord.length * 0.2
+            if(this.difficulty == "hard")this.score += this.currentWord.length * 0.5
             this.mobileInput.value = "";
             this.generateWord();
         }
