@@ -16,7 +16,7 @@ const loadRankings = async () => {
         const response = await get(RANKINGS_BLOB);
         if (!response.ok) throw new Error("Failed to fetch rankings");
         const data = await response.text();
-        return JSON.parse(data);
+        return data ? JSON.parse(data) : [];
     } catch (error) {
         console.error("Error loading rankings:", error);
         return [];
@@ -26,7 +26,7 @@ const loadRankings = async () => {
 // ランキングデータを保存する関数
 const saveRankings = async (rankings) => {
     try {
-        await put(RANKINGS_BLOB, JSON.stringify(rankings, null, 2), { access: "public" });
+        await put(RANKINGS_BLOB, JSON.stringify(rankings, null, 2), { access: "public", addRandomSuffix: false });
     } catch (error) {
         console.error("Error saving rankings:", error);
     }
