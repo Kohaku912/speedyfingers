@@ -257,7 +257,8 @@ class TypingGame {
         
             // その他汎用関数
             'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'log', 'log10', 'exp', 
-            'hypot', 'fmod', 'remainder', 'modf', 'frexp', 'ldexp'
+            'hypot', 'fmod', 'remainder', 'modf', 'frexp', 'ldexp',
+            "initWithBitmapDataPlanes:pixelsWide:pixelsHigh:bitsPerSample:samplesPerPixel:hasAlpha:isPlanar:colorSpaceName:bitmapFormat:bytesPerRow:bitsPerPixel:"
         ];
         this.filterWordsByDifficulty();
     }
