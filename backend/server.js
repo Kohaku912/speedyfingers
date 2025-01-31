@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // ランキングデータをロードする関数
 const loadRankings = async () => {
     try {
-        const response = await get(RANKINGS_BLOB);
+        const response = await fetch(`https://xrlzmauec1gepnkb.public.blob.vercel-storage.com/${RANKINGS_BLOB}`);
         if (!response.ok) throw new Error("Failed to fetch rankings");
         const data = await response.text();
         return data ? JSON.parse(data) : [];
