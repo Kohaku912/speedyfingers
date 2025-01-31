@@ -46,6 +46,8 @@ class TypingGame {
         this.resetGame();
         this.gameActive = true;
         this.startButton.disabled = true;
+        this.setDifficultyButtonsDisabled(true);
+        
         this.timer = setInterval(() => {
             this.timeLeft -= 0.01;
             this.timerDisplay.textContent = `Time: ${this.timeLeft.toFixed(2)}`;
@@ -68,38 +70,18 @@ class TypingGame {
         this.wordContainer.innerHTML = '';
     }
 
-    endGame(gameCleared = false) {
+    
+    endGame() {
         this.gameActive = false;
         clearInterval(this.timer);
         this.startButton.disabled = false;
-    
-        if (gameCleared) {
-            // 残り時間をスコアに追加
-            this.score += Math.floor(this.timeLeft * 10); // 残り秒数を10倍してスコアに追加
-        }
-    
-        const elapsedTime = 40.00 - this.timeLeft;
-        const typingSpeed = (this.totalTyped / elapsedTime).toFixed(2);
-    
-        const title = gameCleared ? 'Congratulations! You cleared the game!' : 'Game Over!';
-        const message = gameCleared
-            ? `<p>Final Score (with time bonus): ${this.score}</p>`
-            : `<p>Final Score: ${this.score}</p>`;
-    
-        Swal.fire({
-            title,
-            html: `
-                ${message}
-                <p>Total Typed: ${this.totalTyped}</p>
-                <p>Missed Typed: ${this.missedTyped}</p>
-                <p>Typing Speed: ${typingSpeed} chars/sec</p>
-            `,
-            icon: 'success',
-            confirmButtonText: 'OK'
+        this.setDifficultyButtonsDisabled(false);
+    }
+
+    setDifficultyButtonsDisabled(disabled) {
+        document.querySelectorAll('.difficulty-button').forEach(button => {
+            button.disabled = disabled;
         });
-    
-        this.saveScore();
-        this.displayRanking();
     }
     
     generateWord() {
@@ -185,31 +167,27 @@ class TypingGame {
     addDifficultyListeners() {
         const buttons = document.querySelectorAll('.difficulty-button');
         buttons.forEach(button => {
+            button.setAttribute('title', 'ゲーム開始前に選択してください'); // ヒントを設定
             button.addEventListener('click', (event) => {
-                // 全ボタンから選択中のスタイルを削除
-                buttons.forEach(btn => btn.classList.remove('ring-4', 'ring-offset-2', 'ring-indigo-500'));
-    
-                // 選択されたボタンにスタイルを追加
-                event.target.classList.add('ring-4', 'ring-offset-2', 'ring-indigo-500');
-    
-                // モードを設定し、表示を更新
-                const selectedMode = event.target.textContent.toLowerCase();
-                this.setDifficulty(selectedMode);
-                document.getElementById('selected-difficulty').textContent = `現在の難易度: ${selectedMode.charAt(0).toUpperCase() + selectedMode.slice(1)}`;
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                event.target.classList.add('selected');
+                this.setDifficulty(event.target.textContent.toLowerCase());
             });
         });
     }
     
-
     setDifficulty(level) {
         this.difficulty = level;
         this.filterWordsByDifficulty();
-        Swal.fire({
-            title: 'Difficulty Selected',
-            text: `You chose ${level.toUpperCase()} mode!`,
-            icon: 'info',
-            confirmButtonText: 'OK'
-        });
+        this.showDifficultyNotification(level);
+    }
+
+    showDifficultyNotification(level) {
+        const notification = document.createElement('div');
+        notification.textContent = `Difficulty set to ${level.toUpperCase()}`;
+        notification.className = 'difficulty-notification';
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
     }
 
     loadWords() {
