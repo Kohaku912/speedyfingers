@@ -71,11 +71,38 @@ class TypingGame {
     }
 
     
-    endGame() {
+    endGame(gameCleared = false) {
         this.gameActive = false;
         clearInterval(this.timer);
         this.startButton.disabled = false;
-        this.setDifficultyButtonsDisabled(false);
+    
+        if (gameCleared) {
+            // 残り時間をスコアに追加
+            this.score += Math.floor(this.timeLeft * 10); // 残り秒数を10倍してスコアに追加
+        }
+    
+        const elapsedTime = 60.00 - this.timeLeft;
+        const typingSpeed = (this.totalTyped / elapsedTime).toFixed(2);
+    
+        const title = gameCleared ? 'Congratulations! You cleared the game!' : 'Game Over!';
+        const message = gameCleared
+            ? `<p>Final Score (with time bonus): ${this.score}</p>`
+            : `<p>Final Score: ${this.score}</p>`;
+    
+        Swal.fire({
+            title,
+            html: `
+                ${message}
+                <p>Total Typed: ${this.totalTyped}</p>
+                <p>Missed Typed: ${this.missedTyped}</p>
+                <p>Typing Speed: ${typingSpeed} chars/sec</p>
+            `,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    
+        this.saveScore();
+        this.displayRanking();
     }
 
     setDifficultyButtonsDisabled(disabled) {
