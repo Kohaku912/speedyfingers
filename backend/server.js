@@ -26,6 +26,9 @@ const loadRankings = async () => {
 // ランキングデータを保存する関数
 const saveRankings = async (rankings) => {
     try {
+        if(rankings["name"].length > 10){
+            rankings["name"] = rankings["name"].slice(0,10)
+        }
         await put(RANKINGS_BLOB, JSON.stringify(rankings, null, 2), { access: "public", addRandomSuffix: false });
     } catch (error) {
         console.error("Error saving rankings:", error);
