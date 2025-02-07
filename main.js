@@ -302,7 +302,7 @@ class TypingGame {
         }, 1000); // 1秒後に削除
     }
     async saveScore() {
-        const playerName = prompt("Enter your name for the leaderboard:") || "Anonymous";
+        const playerName = prompt("Enter your name for the leaderboard(max 10 characters):") || "Anonymous";
         const response = await fetch('https://speedyfingers-gjbo.vercel.app/rankings', {
             method: 'POST',
             headers: {
@@ -322,8 +322,6 @@ class TypingGame {
         try {
             const response = await fetch(`https://speedyfingers-gjbo.vercel.app/rankings`);
             const rankings = await response.json();
-    
-            console.log('Fetched Rankings:', rankings); // デバッグ用出力
     
             this.rankingList.innerHTML = '';
             if (rankings.length === 0) {
